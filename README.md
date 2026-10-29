@@ -1,57 +1,58 @@
 # StudyPilot 🎓
 
-**Your Academic Copilot**
+**Your Academic Copilot** — organize assignments, build a realistic study plan and beat procrastination.
 
-StudyPilot is a project in development designed to help university students organize assignments, plan their studies, and overcome procrastination.
+## ✨ Features
 
-## 🎯 Project Goal
+- **Dashboard**: pending / completed / overdue counters, time left, study streak 🔥, overall progress, last-7-days chart and coach alerts.
+- **Assignments**: add, edit, delete (with confirmation), complete / reopen, per-assignment progress, quick **＋15/30/60 min** study logging (auto-completes when the estimate is reached), notes, duplicate and past-date warnings.
+- **Search, filter & sort**: by text, course, priority, status; sort by urgency, due date, priority, course or newest.
+- **Smart plan**: a day-by-day schedule that ranks tasks by urgency (priority + deadline), splits long work into blocks, **never exceeds your daily minutes**, flags tasks that are at risk of missing their deadline, logs a session with one click and exports to Markdown / CSV.
+- **Focus timer**: live countdown (Pomodoro style) tied to an assignment; log the session when it ends.
+- **Coach**: offline tips that always work, plus an optional **AI coach** (any OpenAI-compatible endpoint — built for Nebius Token Factory + NVIDIA Nemotron).
+- **Persistent & safe storage**: `tasks.json` / `settings.json` (atomic writes, corrupt-file recovery, automatic migration of data from the first prototype). Backup download in the sidebar.
 
-Help students manage their academic workload through organized planning, smaller study sessions, and progress tracking.
+## ▶️ Run locally
 
-## 🛠️ Technologies
+```bash
+python -m venv .venv
+# Windows PowerShell:  .\.venv\Scripts\Activate.ps1      macOS/Linux: source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m streamlit run app.py
+```
 
-- Python
-- Streamlit
-- NVIDIA Nemotron (planned integration)
-- Nebius Token Factory (planned integration)
+Click **Load demo data** in the sidebar to see everything working right away.
 
-## ✅ Current Features
+## 🤖 Optional AI coach
 
-- Initial web interface in English.
-- Assignment creation form.
-- Assignment name, course, due date, and priority fields.
-- Form fields clear after submission.
-- Pending and completed assignments displayed separately.
-- Confirmation before marking an assignment as completed.
-- Option to reopen completed assignments.
+The app works fully without it. To enable it, open **🤖 AI coach** in the sidebar (or set environment variables):
 
-## 🚧 Current Status
+| Variable | Meaning |
+| --- | --- |
+| `STUDYPILOT_AI_API_KEY` (or `NEBIUS_API_KEY`) | API key — never written to disk |
+| `STUDYPILOT_AI_BASE_URL` | default `https://api.tokenfactory.nebius.com/v1` |
+| `STUDYPILOT_AI_MODEL` | model id exactly as shown in your provider's catalog (e.g. a Nemotron model) |
 
-StudyPilot currently has a functional prototype for creating and managing assignments during an active Streamlit session.
+## 🧪 Tests
 
-**Note:** Assignments are not yet saved permanently. Data persistence, intelligent study planning, progress tracking, and AI integration remain future development goals.
+```bash
+python -m unittest discover -v
+```
 
-## ▶️ Run Locally
+Covers the planner (including randomized invariants), storage, the AI client (mocked) and full user flows of `app.py`. `tests/test_app_streamlit.py` runs the app on the real Streamlit runtime (`AppTest`) and is skipped if Streamlit isn't installed.
 
-1. Clone the repository.
-2. Create a virtual environment:
+## 🗂️ Structure
 
-   `python -m venv .venv`
+| File | Role |
+| --- | --- |
+| `app.py` | Streamlit UI |
+| `planner.py` | Pure logic: urgency, plan, filters, stats, exports |
+| `storage.py` | JSON persistence and migration |
+| `ai_coach.py` | Optional AI client (standard library only) |
+| `tests/` | Unit and flow tests |
 
-3. Activate the environment on Windows PowerShell:
+## 🚧 Roadmap
 
-   `.\.venv\Scripts\Activate.ps1`
+Calendar (.ics) export, PDF/slides import to generate assignments, spaced-repetition reviews, multi-user accounts.
 
-   If PowerShell blocks script execution, run the application directly through the virtual environment's Python executable instead.
-
-4. Install Streamlit:
-
-   `python -m pip install streamlit`
-
-5. Start the application:
-
-   `python -m streamlit run app.py`
-
-## 📌 Project Context
-
-StudyPilot is being developed as part of a hackathon project. Features and technologies will be added incrementally as development progresses.
+*Hackathon project — built with Python, Streamlit, NVIDIA Nemotron and Nebius Token Factory.*

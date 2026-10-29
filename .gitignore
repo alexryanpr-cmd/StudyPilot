@@ -1,7 +1,8 @@
 .venv/
 __pycache__/
-*.py[cod]
+*.pyc
 .env
-.streamlit/secrets.toml
+# personal study data
 tasks.json
 settings.json
+*.corrupt-*

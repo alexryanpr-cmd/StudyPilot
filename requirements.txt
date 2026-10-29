@@ -1,0 +1,2 @@
+streamlit>=1.37
+tavily-python>=0.8.5
